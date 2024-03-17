@@ -1,18 +1,23 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowDownToLine, CircleCheck } from "lucide-react";
+import { ArrowDownToLine, CircleCheck, Leaf } from "lucide-react";
 import Link from "next/link";
 
 const perks = [
   {
     name: "Instant Delivery",
     icon: ArrowDownToLine,
-    description: "Get your assets delivered to your email in minutes and download them right away.",
+    description: "Get your assets delivered to your email in minutes and download them right away. Not happy? We offer a 30-day refund gurantee.",
   },
   {
     name: "Guaranteed Quality",
     icon: CircleCheck,
     description: "Every asset on our platform is verified by our team to ensure our highest quality standards."
+  },
+  {
+    name: "For Earth",
+    icon: Leaf,
+    description: "We've pledged 1% of sales to the preservation and restoration of the natural environment."
   },
 ]
 
@@ -43,7 +48,13 @@ export default function Home() {
       <section className="border-t border-gray-200 bg-gray-50">
         <MaxWidthWrapper className="py-20">
           <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
+            {
+              perks.map((perk, index) => (
+                <div>
 
+                </div>
+              ))
+            }
           </div>
         </MaxWidthWrapper>
       </section>
