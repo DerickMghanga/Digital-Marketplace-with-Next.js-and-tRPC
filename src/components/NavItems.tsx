@@ -1,16 +1,23 @@
 "use client"
 
 import { PRODUCT_CATEGORIES } from "@/config";
-import { useState } from "react"
+import { useRef, useState } from "react"
 import NavItem from "./NavItem";
+import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
 export default function NavItems() {
     const [activeIndex, setActiveIndex] = useState<null | number>(null);
 
     const isAnyOpen  = activeIndex !== null  // means a user has selected one category
 
+    //close navbar menu when user clicks outside the navbar
+    const navRef = useRef<HTMLDivElement | null>(null)
+
+    // from hooks/use-on-click-outside.ts >> takes in the ref element and function to execute
+    useOnClickOutside(navRef, ()=>setActiveIndex(null)) 
+
   return (
-    <div className="flex gap-4 h-full">
+    <div className="flex gap-4 h-full" ref={navRef}>
         {
           PRODUCT_CATEGORIES.map((category, i) => {
 
