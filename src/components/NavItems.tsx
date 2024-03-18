@@ -19,7 +19,7 @@ export default function NavItems() {
     // handler is called once a key is pressed >> add an event listener
     document.addEventListener('keydown', handler)
 
-    //clean-up function  >> prevents memory leaks
+    //clean-up function >> prevents memory leaks
     return () => {
       document.removeEventListener("keydown", handler)
     }
