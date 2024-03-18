@@ -17,13 +17,13 @@ export default function NavItems() {
             // keep track of what item is active(clicked) on the NavBar
             const handleOpen = () => {
               if (activeIndex === i) {
-                setActiveIndex(null)
+                setActiveIndex(null)  //close the menu if clicked again
               } else {
                 setActiveIndex(i)
               }
             }
 
-            const isOpen = i === activeIndex
+            const isOpen = i === activeIndex  //boolean
 
             return(
               <NavItem
