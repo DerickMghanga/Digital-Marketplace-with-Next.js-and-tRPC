@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// CUSTOME MADE FOR CURRENCY EDITING 
+// CUSTOM MADE FOR CURRENCY EDITOR
 export function formatPrice(
   price: number | string,
   options: {
@@ -15,7 +15,7 @@ export function formatPrice(
 ) {
   const { currency = "USD", notation = "compact" } = options
 
-  // check price value if string and change to number/float
+  // check price value if string, change to number/float
   const numericPrice = typeof price === 'string' ? parseFloat(price) : price
 
   return new Intl.NumberFormat("en-US", {

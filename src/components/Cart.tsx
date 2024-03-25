@@ -1,12 +1,18 @@
 "use client"
 
 import { ShoppingCartIcon } from 'lucide-react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
 import { Separator } from '@radix-ui/react-separator'
+import { formatPrice } from '@/lib/utils'
+import Link from 'next/link'
+import { buttonVariants } from './ui/button'
+import Image from 'next/image'
 
 export default function Cart() {
 
-    const itemCount = 2
+    const itemCount = 0
+
+    const fee = 1
     return (
         <Sheet>
             <SheetTrigger className='group -m-2 flex items-center p-2'>
@@ -37,12 +43,32 @@ export default function Cart() {
                                     </div>
                                     <div className='flex'>
                                         <span className='flex-1'>Transaction Fee</span>
-                                        <span>Free</span>
+                                        <span>{formatPrice(fee)}</span>
+                                    </div>
+                                    <div className='flex'>
+                                        <span className='flex-1'>Total</span>
+                                        <span>{formatPrice(fee)}</span>
                                     </div>
                                 </div>
+
+                                <SheetFooter>
+                                    <SheetTrigger asChild>
+                                        <Link href="/cart" className={buttonVariants({
+                                            className: "w-full"
+                                        })}>
+                                            Continue to Checkout
+                                        </Link>
+                                    </SheetTrigger>
+                                </SheetFooter>
                             </div>
                         </>
-                    ) : (<div></div>)
+                    ) : (
+                        <div className='flex h-full flex-col items-center justify-center space-y-1'>
+                            <div aria-hidden='true' className='relative mb-4 h-60 w-60 text-muted-foreground'>
+                                <Image src="/hippo-empty-cart.png" fill alt='empty shopping cart hippo' />
+                            </div>
+                        </div>
+                    )
                 }
             </SheetContent>
         </Sheet>
