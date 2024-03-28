@@ -1,17 +1,22 @@
-import { mongooseAdapter } from "@payloadcms/db-mongodb"
+import path from 'path'
+
+import { payloadCloud } from '@payloadcms/plugin-cloud'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
-import { slateEditor } from "@payloadcms/richtext-slate"
-import { buildConfig } from "payload/config"
-import path from "path"
+import { slateEditor } from '@payloadcms/richtext-slate'
+import { buildConfig } from 'payload/config'
+
+import Users from './collections/Users'
 
 export default buildConfig({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-    collections: [],
+    collections: [Users],
     routes: {
         admin: '/sell'
     },
     admin: {
         bundler: webpackBundler(),
+        user: Users.slug,
         meta: {
             titleSuffix: "- DigiHippo",
             favicon: '/favicon.ico',
@@ -23,9 +28,13 @@ export default buildConfig({
     },
     editor: slateEditor({}),
     db: mongooseAdapter({
-        url: process.env.MONGODB_URL!
+        url: process.env.DATABASE_URI!,
     }),
     typescript: {
-        outputFile: path.resolve(__dirname, "payload-types.ts")
-    }
+        outputFile: path.resolve(__dirname, 'payload-types.ts'),
+    },
+    graphQL: {
+        schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
+    },
+    plugins: [payloadCloud()],
 })

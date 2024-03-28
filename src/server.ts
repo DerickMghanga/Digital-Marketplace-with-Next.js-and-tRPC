@@ -1,31 +1,38 @@
-import express from "express"
-import { getPayloadClient } from "./get-payload"
-import { nextApp, nextHandler } from "./next-utils"
+import express from 'express'
+import payload from 'payload'
+import { nextApp, nextHandler } from './next-utils'
 
+require('dotenv').config()
 const app = express()
 
-const PORT = Number(process.env.PORT) || 3000
+const PORT = Number(process.env.PORT)
+
+// // Redirect root to Admin panel
+// app.get('/', (_, res) => {
+//   res.redirect('/admin')
+// })
 
 const start = async () => {
-    // start our admin dashboard (provided by Payload)
-    const payload = await getPayloadClient({
-        initOptions: {
-            express: app,
-            onInit: async (cms) => {
-                cms.logger.info(`Admin URL: ${cms.getAdminURL()}`)
-            },
-        },
-    })
+  // Initialize Payload
+  await payload.init({
+    secret: process.env.PAYLOAD_SECRET!,
+    express: app,
+    onInit: async () => {
+      payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
+    },
+  })
 
-    app.use((req, res) => nextHandler(req, res))  // let Next.js handle all requests
+  // Add your own express routes here
 
-    nextApp.prepare().then(()=>{
-        payload.logger.info('Next.js started!')
+  app.use((req, res) => nextHandler(req, res))  // let Next.js handle all requests
 
-        app.listen(PORT, async()=>{
-            payload.logger.info(`Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`)
-        })
-    })
+  nextApp.prepare().then(()=>{
+      //payload.logger.info('Next.js started!')
+
+      app.listen(PORT, async()=>{
+          //payload.logger.info(`Next.js App URL: ${process.env.NEXT_PUBLIC_SERVER_URL}`)
+      })
+  })
 }
 
 start()
