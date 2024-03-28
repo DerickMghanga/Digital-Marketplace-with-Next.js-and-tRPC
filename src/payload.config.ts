@@ -5,8 +5,14 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import { buildConfig } from 'payload/config'
+import dotenv from 'dotenv'
 
 import Users from './collections/Users'
+
+
+dotenv.config({
+    path: path.resolve(__dirname, '../.env'),
+})
 
 export default buildConfig({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',

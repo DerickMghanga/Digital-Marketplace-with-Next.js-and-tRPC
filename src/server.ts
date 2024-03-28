@@ -1,6 +1,7 @@
 import express from 'express'
 import payload from 'payload'
 import { nextApp, nextHandler } from './next-utils'
+import { getPayloadClient } from './get-payload'
 
 require('dotenv').config()
 const app = express()
