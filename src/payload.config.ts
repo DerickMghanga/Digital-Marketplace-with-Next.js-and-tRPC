@@ -1,4 +1,5 @@
 import { mongooseAdapter } from "@payloadcms/db-mongodb"
+import {webpackBundler} from '@payloadcms/bundler-webpack'
 import { slateEditor } from "@payloadcms/richtext-slate"
 import { buildConfig } from "payload/config"
 
@@ -8,7 +9,14 @@ export default buildConfig({
     routes: {
         admin: '/sell'
     },
-    admin: {},
+    admin: {
+        bundler: webpackBundler(),
+        meta: {
+            titleSuffix: "- DigiHippo",
+            favicon: '/favicon.ico',
+            ogImage: '/thumbnail.jpg',
+        }
+    },
     editor: slateEditor({}),
     db: mongooseAdapter({
         url: process.env.MONGODB_URL!
