@@ -7,8 +7,24 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 
-export default function page() {
+export default function SignUpPage() {
+
+    //schema validator from Zod
+    const AuthCredentialsValidator = z.object({  // similar to JS objects
+        email: z.string().email(),  // checks if its a string and also an email
+        password: z.string().min(8, {message: "Password MUST be atleast 8 characters long!"})
+    })
+
+    //type(typescript) of validator to make Form type safe
+    type TypeAuthCredentialsValidator = z.infer<typeof AuthCredentialsValidator>
+
+    const { register, handleSubmit, formState: { errors } } = useForm<TypeAuthCredentialsValidator>({
+        resolver: zodResolver(AuthCredentialsValidator), // Zod is a TypeScript-first schema validation with static type inference.
+    })
 
     return (
         <div className="container relative flex pt-16 flex-col items-center justify-center lg:px-0">
@@ -32,21 +48,21 @@ export default function page() {
                             <div className="grid gap-1 py-3">
                                 <Label htmlFor="email">Email</Label>
                                 <Input className={cn({
-                                    "focus-visible:ring-red-500":true
+                                    "focus-visible:ring-red-500": true
                                 })}
-                                placeholder="ie. you@example.com"
+                                    placeholder="ie. you@example.com"
                                 />
                             </div>
                             <div className="grid gap-1 py-3">
                                 <Label htmlFor="password">Password</Label>
                                 <Input className={cn({
-                                    "focus-visible:ring-red-500":true
+                                    "focus-visible:ring-red-500": true
                                 })}
-                                placeholder="Password"
+                                    placeholder="Password"
                                 />
                             </div>
 
-                            <Button>Sign up</Button>
+                            <Button >Sign up</Button>
                         </div>
                     </form>
                 </div>
