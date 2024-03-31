@@ -9,22 +9,19 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { AuthCredentialsValidator, TypeAuthCredentialsValidator } from "@/lib/account-credentials-validator";
 
 export default function SignUpPage() {
 
-    //schema validator from Zod
-    const AuthCredentialsValidator = z.object({  // similar to JS objects
-        email: z.string().email(),  // checks if its a string and also an email
-        password: z.string().min(8, {message: "Password MUST be atleast 8 characters long!"})
-    })
-
-    //type(typescript) of validator to make Form type safe
-    type TypeAuthCredentialsValidator = z.infer<typeof AuthCredentialsValidator>
-
+    //REACT-HOOK-FORM STATE
     const { register, handleSubmit, formState: { errors } } = useForm<TypeAuthCredentialsValidator>({
         resolver: zodResolver(AuthCredentialsValidator), // Zod is a TypeScript-first schema validation with static type inference.
     })
+
+    //SUBMIT FORM
+    const onSubmit = ({ email, password }: TypeAuthCredentialsValidator) => {
+        // Send data to the server
+    }
 
     return (
         <div className="container relative flex pt-16 flex-col items-center justify-center lg:px-0">
@@ -43,26 +40,28 @@ export default function SignUpPage() {
                 </div>
 
                 <div className="grid gap-6">
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid gap-2">
                             <div className="grid gap-1 py-3">
                                 <Label htmlFor="email">Email</Label>
                                 <Input className={cn({
-                                    "focus-visible:ring-red-500": true
+                                    "focus-visible:ring-red-500": errors.email
                                 })}
+                                    {...register("email")}  //from useForm hook(react-hook-form)
                                     placeholder="ie. you@example.com"
                                 />
                             </div>
                             <div className="grid gap-1 py-3">
                                 <Label htmlFor="password">Password</Label>
                                 <Input className={cn({
-                                    "focus-visible:ring-red-500": true
+                                    "focus-visible:ring-red-500": errors.password
                                 })}
+                                    {...register("password")}  //from useForm hook(react-hook-form)
                                     placeholder="Password"
                                 />
                             </div>
 
-                            <Button >Sign up</Button>
+                            <Button type="submit" >Sign up</Button>
                         </div>
                     </form>
                 </div>
