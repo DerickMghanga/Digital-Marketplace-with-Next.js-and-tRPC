@@ -2,6 +2,8 @@ import express from 'express'
 import payload from 'payload'
 import { nextApp, nextHandler } from './next-utils'
 import { getPayloadClient } from './get-payload'
+import * as trpcExpress from '@trpc/server/adapters/express';
+import { appRouter } from './trpc';
 
 require('dotenv').config()
 const app = express()
@@ -24,6 +26,9 @@ const start = async () => {
   })
 
   // Add your own express routes here
+  app.use('/api/trpc', trpcExpress.createExpressMiddleware({
+    router: appRouter
+  }))
 
   app.use((req, res) => nextHandler(req, res))  // let Next.js handle all requests
 
