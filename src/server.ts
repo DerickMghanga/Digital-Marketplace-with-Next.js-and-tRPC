@@ -15,6 +15,11 @@ const PORT = Number(process.env.PORT)
 //   res.redirect('/admin')
 // })
 
+//context for trpc from backend to frontend
+const createContext = ({req, res}:trpcExpress.CreateExpressContextOptions) => ({
+  req, res
+})
+
 const start = async () => {
   // Initialize Payload
   await payload.init({
@@ -27,7 +32,8 @@ const start = async () => {
 
   // Add your own express routes here
   app.use('/api/trpc', trpcExpress.createExpressMiddleware({
-    router: appRouter
+    router: appRouter,
+    createContext: createContext
   }))
 
   app.use((req, res) => nextHandler(req, res))  // let Next.js handle all requests
