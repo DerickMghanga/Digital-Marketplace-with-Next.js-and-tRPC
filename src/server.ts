@@ -36,7 +36,7 @@ const start = async () => {
     createContext: createContext
   }))
 
-  app.use((req, res) => nextHandler(req, res))  // let Next.js handle all requests
+  app.use((req, res) => nextHandler(req, res))  // let Next.js handle requests
 
   nextApp.prepare().then(()=>{
       //payload.logger.info('Next.js started!')
