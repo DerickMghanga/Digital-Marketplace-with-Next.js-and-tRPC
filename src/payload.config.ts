@@ -6,8 +6,7 @@ import { webpackBundler } from '@payloadcms/bundler-webpack'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import { buildConfig } from 'payload/config'
 import dotenv from 'dotenv'
-
-import Users from './collections/Users'
+import { Users } from './collections/Users'
 
 
 dotenv.config({
@@ -22,7 +21,7 @@ export default buildConfig({
     },
     admin: {
         bundler: webpackBundler(),
-        user: Users.slug,
+        user: "users",
         meta: {
             titleSuffix: "- DigiHippo",
             favicon: '/favicon.ico',
@@ -39,8 +38,4 @@ export default buildConfig({
     typescript: {
         outputFile: path.resolve(__dirname, 'payload-types.ts'),
     },
-    graphQL: {
-        schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
-    },
-    plugins: [payloadCloud()],
 })

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import path from 'path' //in-built in node.js apps
-import payload from 'payload'
+import payload, { Payload } from 'payload'
 import type { InitOptions } from 'payload/config'  // typescripts types for payload
 
 dotenv.config({
@@ -21,7 +21,7 @@ interface Args {
     initOptions?: Partial<InitOptions>
 }
 
-export const getPayloadClient = async ({ initOptions }: Args ={}) => {
+export const getPayloadClient = async ({ initOptions }: Args ={}): Promise<Payload> => {
     if (!process.env.PAYLOAD_SECRET) {
         throw new Error("PAYLOAD_SECRET is missing!")
     }
@@ -30,7 +30,7 @@ export const getPayloadClient = async ({ initOptions }: Args ={}) => {
         return cached.client
     }
 
-    if (cached.promise) {
+    if (!cached.promise) {
         cached.promise = payload.init({
             secret: process.env.PAYLOAD_SECRET,
             local: initOptions?.express ? false : true,
@@ -40,9 +40,9 @@ export const getPayloadClient = async ({ initOptions }: Args ={}) => {
     
     try {
         cached.client = await cached.promise
-    } catch (err: unknown) {
+    } catch (e: unknown) {
         cached.promise = null
-        throw err
+        throw e
     }
 
     return cached.client

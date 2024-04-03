@@ -9,7 +9,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AuthCredentialsValidator, TypeAuthCredentialsValidator } from "@/lib/account-credentials-validator";
+import { AuthCredentialsValidator, TypeAuthCredentialsValidator } from "@/lib/validators/account-credentials-validator";
+import { trpc } from "@/trpc/client";
 
 export default function SignUpPage() {
 
@@ -17,6 +18,10 @@ export default function SignUpPage() {
     const { register, handleSubmit, formState: { errors } } = useForm<TypeAuthCredentialsValidator>({
         resolver: zodResolver(AuthCredentialsValidator), // Zod is a TypeScript-first schema validation with static type inference.
     })
+
+    // trpc 
+    //const { data } = trpc.auth.useQuery()
+    //console.log(data)
 
     //SUBMIT FORM
     const onSubmit = ({ email, password }: TypeAuthCredentialsValidator) => {
