@@ -1,11 +1,9 @@
 import express from 'express'
-import payload from 'payload'
 import { nextApp, nextHandler } from './next-utils'
 import { getPayloadClient } from './get-payload'
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { appRouter } from './trpc';
 
-require('dotenv').config()
 const app = express()
 
 const PORT = Number(process.env.PORT)
@@ -22,11 +20,12 @@ const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) =>
 
 const start = async () => {
   // Initialize Payload
-  await payload.init({
-    secret: process.env.PAYLOAD_SECRET!,
-    express: app,
-    onInit: async () => {
-      payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
+  const payload = await getPayloadClient({
+    initOptions: {
+      express: app,
+      onInit: async (cms) => {
+        cms.logger.info(`Admin URL: ${cms.getAdminURL()}`)
+      },
     },
   })
 
